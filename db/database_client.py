@@ -4,9 +4,9 @@ import pandas as pd
 class DatabaseClient:
     def __init__(self, db_path='dbname=mydatabase user=myuser password=password host=localhost'):
         """Initialize the database client and connect to the PostgreSQL database."""
-        self.connection = psycopg2.connect(db_path)  # Connect to the specified PostgreSQL database
-        self.cursor = self.connection.cursor()  # Create a cursor object to execute SQL commands
-        self.create_table()  # Create the table if it doesn't exist
+        self.connection = psycopg2.connect(db_path)   
+        self.cursor = self.connection.cursor()   
+        self.create_table()   
 
     def is_connected(self):
         """Logic to check if the database connection is active"""
@@ -31,8 +31,8 @@ class DatabaseClient:
             predictedProbability TEXT   
         )
         """
-        self.cursor.execute(create_table_sql)  # Execute the SQL command to create the table
-        self.connection.commit()  # Commit the table creation
+        self.cursor.execute(create_table_sql)   
+        self.connection.commit()  
 
     def insert_data(self, data):
         """Insert the fetched APY yield data into the database."""
@@ -52,19 +52,19 @@ class DatabaseClient:
                 )
                 for row in data
             ]
-            # Execute the insert command for all records
+             
             self.cursor.executemany(insert_sql, records)
-            self.connection.commit()  # Commit the changes to the database
+            self.connection.commit()   
         else:
             raise ValueError("Data should be a list of dictionaries")
 
     def close(self):
         """Close the database connection."""
-        self.connection.close()  # Close the database connection
+        self.connection.close()   
 
     def fetch_data(self):
         """Fetch all records from the apy_yield table."""
-        fetch_sql = "SELECT * FROM apy_yield"  # SQL command to select all records
-        self.cursor.execute(fetch_sql)  # Execute the SQL command
-        records = self.cursor.fetchall()  # Fetch all records
+        fetch_sql = "SELECT * FROM apy_yield"   
+        self.cursor.execute(fetch_sql)   
+        records = self.cursor.fetchall()   
         return pd.DataFrame(records, columns=[desc[0] for desc in self.cursor.description])  # Convert to DataFrame

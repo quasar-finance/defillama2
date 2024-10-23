@@ -1,4 +1,3 @@
-# db/apy.py
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter, FuncFormatter
@@ -81,40 +80,36 @@ def plot_tvl_apy(pool_id, df):
 if __name__ == '__main__':
     apy_data = fetch_apy_yield()
 
-    # Convert numpy types to strings (if necessary for your database)
+     
     apy_data = apy_data.apply(lambda x: x.map(lambda y: str(y) if isinstance(y, (np.integer, np.float64)) else y))  # Using apply on columns
-
-    # Convert DataFrame to a list of dictionaries
+    
     apy_data = apy_data.to_dict(orient='records')
 
-    # Clean data to handle NaN and None values
     apy_data = clean_data(apy_data)
 
-    # Debugging print: Check structure of cleaned apy_data
-    print("apy_data after cleaning: ", apy_data[:3])  # Show the first few records for validation
-
-    # Choose to save either to a database or to a CSV file
+     
+    print("apy_data after cleaning: ", apy_data[:3])   
+     
     save_option = input("Choose output (db/csv): ").strip().lower()
 
     if save_option == 'db':
-        db_client = None  # Initialize db_client
+        db_client = None   
         try:
             db_client = DatabaseClient()
             
-            # Ensure db_client is connected
+             
             if not db_client.is_connected():
                 raise Exception("Database client is not connected.")
             
-            # Insert all records at once
+             
             db_client.insert_data(apy_data)
             
         except Exception as e:
             print(f"Error while inserting data into the database: {e}")
         finally:
-            if db_client:  # Check if db_client was successfully created
-                db_client.close()  # Close the database connection
-    elif save_option == 'csv':
-        # Convert the DataFrame directly to CSV
+            if db_client:   
+                db_client.close()   
+    elif save_option == 'csv':         
         apy_data_df = pd.DataFrame(apy_data)
         apy_data_df.to_csv('apy_yield.csv', index=False)  # Save to CSV
     else:
