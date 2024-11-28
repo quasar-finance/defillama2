@@ -4,6 +4,7 @@ from matplotlib.ticker import PercentFormatter, FuncFormatter
 from defillama2 import DefiLlama
 from database_client import DatabaseClient
 import numpy as np
+from tabulate import tabulate
 
 # Set pandas display options
 pd.set_option('display.max_columns', 15)
@@ -38,7 +39,7 @@ def fetch_apy_yield():
     is_true = df.index >= 0  # This will select all rows
 
     cols = ['chain', 'project', 'symbol', 'tvlUsd', 'apyBase', 'apyReward', 'apy', 'apyPct7D', 
-            'mu', 'sigma', 'count', 'predictedClass', 'predictedProbability']
+            'mu', 'sigma', 'count', 'predictedClass', 'predictedProbability', 'pool']
 
     filtered_data = df.loc[is_true, cols].sort_values('apy', ascending=False)
 
@@ -112,5 +113,18 @@ if __name__ == '__main__':
     elif save_option == 'csv':         
         apy_data_df = pd.DataFrame(apy_data)
         apy_data_df.to_csv('apy_yield.csv', index=False)  # Save to CSV
+
+        # Change filters here to chnage chain, project and symbol for filtered data
+        chain = "Base"
+        projects = ['aerodrome-v1', 'uniswap-v3']
+        symbol = '^USDZ(-|$)'
+        base_filtered = apy_data_df[
+            (apy_data_df['chain'] == chain) & 
+            (apy_data_df['project'].isin(projects)) &
+            (apy_data_df['symbol'].str.contains(symbol, na=False))
+        ]
+
+        # Save the filtered data to a new CSV
+        base_filtered.to_csv(chain + '_filtered.csv', index=False)
     else:
         print("Invalid option. Exiting.")
