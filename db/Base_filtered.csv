@@ -1,5 +1,0 @@
-chain,project,symbol,tvlUsd,apyBase,apyReward,apy,apyPct7D,mu,sigma,count,predictedClass,predictedProbability,pool
-Base,aerodrome-v1,USDZ-DOLA,12153662,,22.83246,22.83246,3.84383,22.96352,0.25548,64,Down,72.0,49fd44d2-3364-4db1-9603-fb3cb33c780e
-Base,aerodrome-v1,USDZ-WETH,235149,,18.6596,18.6596,5.43645,25.04295,0.80851,132,Down,68.0,3c413e8f-38ae-42b8-b792-9720df488a4a
-Base,aerodrome-v1,USDZ-USDC,18013785,,12.92526,12.92526,-2.28628,24.21086,0.57124,190,Stable/Up,70.0,a05a3eb9-2901-46ed-937e-5f48ea408552
-Base,aerodrome-v1,USDZ-SUSDZ,675567,,1.439,1.439,-3.04868,14.41879,0.48872,135,Stable/Up,83.0,90d8932d-1075-4f65-a560-1842363dd2b9
